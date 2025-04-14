@@ -1,12 +1,13 @@
 import express from 'express';
+import { router } from './routes';
 
 // Instância do servidor
 const server = express()
 
-// request - requisição que será feita ao servidor
-// response - resposta que vamos entregar ao servidor
-server.get('/', (request, response) => {
-    return response.send('Olá, Dev!')
-})
+// Serve para apresentar os dados, passados no Body, no terminal
+server.use(express.json())
+
+// Indica que nosso server irá fazer uso das rotas que estão no router
+server.use(router)
 
 export { server }
