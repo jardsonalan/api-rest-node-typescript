@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 // Biblioteca para fazer validação de dados
 import * as yup from 'yup'
 
 interface ICidade {
-    name: string;
+    nome: string;
+    estado: string;
 }
 
 // Schema de validação
 const bodyValidation: yup.ObjectSchema<ICidade> = yup.object().shape({
-    name: yup.string().required().min(3),
+    nome: yup.string().required().min(3),
+    estado: yup.string().required().min(3),
 })
 
 // Controller de criação de cidades
@@ -21,14 +24,26 @@ export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
     let validateData: ICidade | undefined = undefined
 
     try {
-        validateData = await bodyValidation.validate(data)
-    } catch (error) {
-        const yupError = error as yup.ValidationError
+        validateData = await bodyValidation.validate(data, { abortEarly: false })
         
-        return res.json({
-            errors: {
-                default: yupError.message // Retorna uma mensagem de erro
-            }
+    } catch (err) {
+        const yupError = err as yup.ValidationError
+        
+        // Record - um objeto que tem que ser composto por uma chave do tipo string e um valor do tipo string
+        const errors: Record<string, string> = {}
+
+        yupError.inner.forEach((error) => {
+            // path - caminho de onde aconteceu o error
+            // message - mensagem de error
+            
+            // Verifica se não existe o path
+            if (!error.path) return
+
+            errors[error.path] = error.message
+        })
+
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors,
         })
     }
 
