@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 // Biblioteca para fazer validação de dados
 import * as yup from 'yup'
@@ -14,18 +14,14 @@ const bodyValidation: yup.ObjectSchema<ICidade> = yup.object().shape({
     estado: yup.string().required().min(3),
 })
 
-// Controller de criação de cidades
-// Tipando o tipo da request - informando que os dados, que o request irá receber, serão os que estão na interface ICidade
-export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
-    // Dados que estamos recebendo da chamada
-    const data = req.body
-
-    // Serve para receber os dados
-    let validateData: ICidade | undefined = undefined
-
+// Middleware
+export const createBodyValidator: RequestHandler = async (req, res, next) => {
+    // Validação dos dados que vem no body do controller (create)
     try {
-        validateData = await bodyValidation.validate(data, { abortEarly: false })
-        
+        // abortEarly - válida todos os erros, antes de retornar algum erro
+        await bodyValidation.validate(req.body, { abortEarly: false })   
+        // Caso a validação for realizada com sucesso, retorna para executar a próxima função
+        return next()
     } catch (err) {
         const yupError = err as yup.ValidationError
         
@@ -36,18 +32,25 @@ export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
             // path - caminho de onde aconteceu o error
             // message - mensagem de error
             
-            // Verifica se não existe o path
+            // Verifica se o path é diferente de undefined
             if (!error.path) return
 
             errors[error.path] = error.message
         })
 
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            errors,
-        })
+        // Retorna os erros específicos da aplicação
+        return res.status(StatusCodes.BAD_REQUEST).json({ errors })
     }
+}
 
-    console.log(validateData)
+// Controller de criação de cidades
+// Esse método só será executado, se os dados passarem na validação do middleware
+// Tipando o tipo da request - informando que os dados, que o request irá receber, serão os que estão na interface ICidade
+export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
+    // Corpo da chamada
+    const data = req.body
 
+    console.log(data)
+    
     return res.send('Create')
 }

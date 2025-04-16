@@ -13,6 +13,7 @@ router.get('/', (request, response) => {
     return response.send('Funcionando')
 })
 
-router.post('/cidades', CidadesController.create)
+// Executa a validação dos dados, antes da criação dos dados
+router.post('/cidades', CidadesController.createBodyValidator, CidadesController.create)
 
 export { router }
