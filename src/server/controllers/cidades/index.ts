@@ -4,6 +4,7 @@
 import * as create from "./Create"
 import * as getAll from './GetAll'
 import * as getById from './GetById'
+import * as updateById from './UpdateById'
 
 // Simplifica o uso das Controllers no arquivo de rotas
 export const CidadesController = {
@@ -11,4 +12,5 @@ export const CidadesController = {
     ...create,
     ...getAll,
     ...getById,
+    ...updateById,
 }

@@ -15,7 +15,8 @@ router.get('/', (request, response) => {
 
 // Executa a validação dos dados, antes da criação dos dados
 router.get('/cidades', CidadesController.getAllValidation, CidadesController.getAll)
-router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesController.getById)
 router.post('/cidades', CidadesController.createValidation, CidadesController.create)
+router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesController.getById)
+router.put('/cidades/:id', CidadesController.updateByIdValidation, CidadesController.updateById)
 
 export { router }
