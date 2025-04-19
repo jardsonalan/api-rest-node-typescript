@@ -13,8 +13,8 @@ router.get('/', (request, response) => {
     return response.send('Funcionando')
 })
 
-// Executa a validação dos dados, antes da criação dos dados
 router.get('/cidades', CidadesController.getAllValidation, CidadesController.getAll)
+// Executa a validação dos dados, antes da criação dos dados
 router.post('/cidades', CidadesController.createValidation, CidadesController.create)
 router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesController.getById)
 router.put('/cidades/:id', CidadesController.updateByIdValidation, CidadesController.updateById)
