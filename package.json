@@ -7,6 +7,10 @@
     "test": "jest",
     "postinstall": "tsc",
     "production": "node ./build/index.js",
+    "knex:migrate": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts migrate:latest",
+    "knex:rollback": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback",
+    "knex:rollback-all": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback --all",
+    "knex:seed": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts seed:run",
     "lint": "eslint . --ext .ts"
   },
   "author": "Jardson Alan",
@@ -28,7 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^8.30.0",
     "@typescript-eslint/parser": "^8.30.0",
     "eslint": "^9.24.0",
-    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "supertest": "^7.1.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
