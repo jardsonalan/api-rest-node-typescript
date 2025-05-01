@@ -3,6 +3,7 @@ import * as getAll from './GetAll'
 import * as getById from './GetById'
 import * as updateById from './UpdateById'
 import * as deleteById from './DeleteById'
+import * as count from './Count'
 
 export const CidadesProvider = {
     // Utiliza o spread para retornar todos os métodos exportados de um arquivo
@@ -11,4 +12,5 @@ export const CidadesProvider = {
     ...getById,
     ...updateById,
     ...deleteById,
+    ...count
 }
