@@ -15,7 +15,9 @@ if (process.env.IS_LOCALHOST !== 'true') {
   // Roda primeiro as migrations e depois inicializa o servidor
   Knex.migrate.latest()
     .then(() => {
-      startServer()
+      Knex.seed.run()
+        .then(() => startServer())
+        .catch(console.log)
     })
     .catch(console.log)
 } else {
