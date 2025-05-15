@@ -34,7 +34,7 @@ export const create = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
       // Retorna um error interno de servidor, com uma mensagem de error padrão
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors: {
-          dafault: result.message
+          default: result.message
         }
       })
     }
