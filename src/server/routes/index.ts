@@ -2,7 +2,7 @@
 // Podemos especificar todas as nossas rotas
 import { Router } from "express";
 // Biblioteca que fornece os status code com mais detalhes
-import { CidadesController, PessoasController } from "../controllers";
+import { CidadesController, PessoasController, UsuariosController } from "../controllers";
 
 const router = Router()
 
@@ -26,5 +26,9 @@ router.post('/pessoas', PessoasController.createValidation, PessoasController.cr
 router.get('/pessoas/:id', PessoasController.getByIdValidation, PessoasController.getById)
 router.put('/pessoas/:id', PessoasController.updateByIdValidation, PessoasController.updateById)
 router.delete('/pessoas/:id', PessoasController.deleteByIdValidation, PessoasController.deleteById)
+
+// Rotas de usuários
+router.post('/entrar', UsuariosController.signInValidation, UsuariosController.signIn)
+router.post('/cadastrar', UsuariosController.signUpValidation, UsuariosController.signUp)
 
 export { router }
