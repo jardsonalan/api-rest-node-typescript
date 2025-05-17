@@ -41,6 +41,4 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
       accessToken: 'teste.teste.teste',
     })
   }
-  
-  // return res.status(StatusCodes.CREATED).json(result)
 }
