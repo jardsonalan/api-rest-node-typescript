@@ -4,19 +4,53 @@ import { testServer } from "../jest.setup"
 // describe - serve para auxiliar durante os testes
 // 1º Parâmetro - serve para descrever qual o cenário que estamos testando
 describe('Pessoas - Create', () => {
+  // Variável que armazena o accessToken
+  let accessToken: string
+  
+  beforeAll(async () => {
+    const email = 'create-pessoas@email.com'
+    const senha = '123456'
+    // Serve para fazer o cadastro de um usuário
+    await testServer
+      .post('/cadastrar')
+      .send({ nome: 'Teste', email, senha })
+    // Serve para fazer o login com o usuário criado
+    const SignInRes = await testServer
+      .post('/entrar')
+      .send({ email, senha })
+    
+    accessToken = SignInRes.body.accessToken
+  })
+
   let cidadeId: number | undefined = undefined
   beforeAll(async () => {
     let resCidade = await testServer
       .post('/cidades/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({ nome: 'Currais Novos' })
 
     cidadeId = resCidade.body
+  })
+
+  it('Tenta criar um registro sem o token de acesso', async () => {
+    const resCreate = await testServer
+      .post('/pessoas/')
+      .send({
+        nome: 'Jardson',
+        sobrenome: 'Alan',
+        email: 'jardson@email.com',
+        cidadeId,
+      })
+
+    expect(resCreate.statusCode).toEqual(StatusCodes.UNAUTHORIZED)
+    expect(resCreate.body).toHaveProperty('errors.default')
   })
   // it - caso de teste, um cenário
   // 1º Parâmetro - serve para descrever o que o teste irá fazer
   it('Cria registro', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -34,6 +68,7 @@ describe('Pessoas - Create', () => {
   it('Cria registro 2', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson Alan',
         sobrenome: 'Vieira da Silva',
@@ -48,6 +83,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o email duplicado', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Juca',
         sobrenome: 'Silva',
@@ -60,6 +96,7 @@ describe('Pessoas - Create', () => {
 
     const resCreate2 = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Juca',
         sobrenome: 'Duplicado',
@@ -74,6 +111,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o nome muito curto', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Ja',
         sobrenome: 'Alan',
@@ -88,6 +126,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o sobrenome muito curto', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Al',
@@ -102,6 +141,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro sem o nome', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         sobrenome: 'Alan',
         email: 'jardson@email.com',
@@ -115,6 +155,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro sem o sobrenome', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         email: 'jardson@email.com',
@@ -128,6 +169,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro sem o email', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -141,6 +183,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o email inválido', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -155,6 +198,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro sem o cidadeId', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -168,6 +212,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o cidadeId inválido', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -182,6 +227,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro com o cidadeId em formato string', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({
         nome: 'Jardson',
         sobrenome: 'Alan',
@@ -196,6 +242,7 @@ describe('Pessoas - Create', () => {
   it('Tenta criar um registro sem enviar nenhuma propriedade', async () => {
     const resCreate = await testServer
       .post('/pessoas/')
+      .set({ Authorization: `Bearer ${accessToken}` })
       .send({})
 
     expect(resCreate.statusCode).toEqual(StatusCodes.BAD_REQUEST)
