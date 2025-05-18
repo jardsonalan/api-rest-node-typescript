@@ -3,6 +3,7 @@
 import { Router } from "express";
 // Biblioteca que fornece os status code com mais detalhes
 import { CidadesController, PessoasController, UsuariosController } from "../controllers";
+import { ensureAuthenticated } from "../shared/middlewares";
 
 const router = Router()
 
@@ -13,19 +14,19 @@ router.get('/', (request, response) => {
 })
 
 // Rotas de cidades
-router.get('/cidades', CidadesController.getAllValidation, CidadesController.getAll)
+router.get('/cidades', ensureAuthenticated, CidadesController.getAllValidation, CidadesController.getAll)
 // Executa a validação dos dados, antes da criação dos dados
-router.post('/cidades', CidadesController.createValidation, CidadesController.create)
-router.get('/cidades/:id', CidadesController.getByIdValidation, CidadesController.getById)
-router.put('/cidades/:id', CidadesController.updateByIdValidation, CidadesController.updateById)
-router.delete('/cidades/:id', CidadesController.deleteByIdValidation, CidadesController.deleteById)
+router.post('/cidades', ensureAuthenticated, CidadesController.createValidation, CidadesController.create)
+router.get('/cidades/:id', ensureAuthenticated, CidadesController.getByIdValidation, CidadesController.getById)
+router.put('/cidades/:id', ensureAuthenticated, CidadesController.updateByIdValidation, CidadesController.updateById)
+router.delete('/cidades/:id', ensureAuthenticated, CidadesController.deleteByIdValidation, CidadesController.deleteById)
 
 // Rotas de pessoas
-router.get('/pessoas', PessoasController.getAllValidation, PessoasController.getAll)
-router.post('/pessoas', PessoasController.createValidation, PessoasController.create)
-router.get('/pessoas/:id', PessoasController.getByIdValidation, PessoasController.getById)
-router.put('/pessoas/:id', PessoasController.updateByIdValidation, PessoasController.updateById)
-router.delete('/pessoas/:id', PessoasController.deleteByIdValidation, PessoasController.deleteById)
+router.get('/pessoas', ensureAuthenticated, PessoasController.getAllValidation, PessoasController.getAll)
+router.post('/pessoas', ensureAuthenticated, PessoasController.createValidation, PessoasController.create)
+router.get('/pessoas/:id', ensureAuthenticated, PessoasController.getByIdValidation, PessoasController.getById)
+router.put('/pessoas/:id', ensureAuthenticated, PessoasController.updateByIdValidation, PessoasController.updateById)
+router.delete('/pessoas/:id', ensureAuthenticated, PessoasController.deleteByIdValidation, PessoasController.deleteById)
 
 // Rotas de usuários
 router.post('/entrar', UsuariosController.signInValidation, UsuariosController.signIn)
