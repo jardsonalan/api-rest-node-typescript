@@ -5,7 +5,7 @@ import { validation } from "../../shared/middlewares";
 import { StatusCodes } from "http-status-codes";
 import { IUsuario } from "../../database/models";
 import { UsuariosProvider } from "../../database/providers/usuarios";
-import { PasswordCrypto } from "../../shared/services";
+import { JWTService, PasswordCrypto } from "../../shared/services";
 
 // Omit: serve para omitir/esconder algum campo
 interface IBodyProps extends Omit<IUsuario, 'id' | 'nome'> {}
@@ -40,8 +40,16 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
       }
     })
   } else {
-    return res.status(StatusCodes.OK).json({
-      accessToken: 'teste.teste.teste',
-    })
+    const accessToken = JWTService.sign({ uid: result.id })
+
+    if (accessToken === 'JWT_SECRET_NOT_FOUND') {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: {
+          default: 'Erro ao gerar o token de acesso'
+        }
+      })
+    }
+
+    return res.status(StatusCodes.OK).json({ accessToken })
   }
 }
