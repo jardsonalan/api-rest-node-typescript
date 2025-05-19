@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev ./src/index.ts",
     "test": "jest",
-    "postinstall": "tsc",
+    "preproduction": "tsc",
     "production": "node ./build/index.js",
     "knex:migrate": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts migrate:latest",
     "knex:rollback": "ts-node ./node_modules/.bin/knex --knexfile ./src/server/database/knex/Environment.ts migrate:rollback",
