@@ -6,7 +6,7 @@ Este projeto é uma API Rest, desenvolvida utilizando Node.js e TypeScript, para
 
 ## Endpoints
 ### Cidades (Privado)
-| Requisição | Caminho | Descrição |
+| Método | Endpoint | Descrição |
 | --- | --- | --- |
 | GET | `/cidades` | Busca uma lista de cidades, com paginação e filtro por nome |
 | POST | `/cidades` | Criar uma nova cidade |
@@ -15,7 +15,7 @@ Este projeto é uma API Rest, desenvolvida utilizando Node.js e TypeScript, para
 | DELETE | `/cidades/:id` | Apaga a cidade pelo seu id |
 
 ### Pessoas (Privado)
-| Requisição | Caminho | Descrição |
+| Método | Endpoint | Descrição |
 | --- | --- | --- |
 | GET | `/pessoas` | Busca uma lista de pessoas, com paginação e filtro por nome |
 | POST | `/pessoas` | Criar uma nova pessoa |
@@ -24,7 +24,7 @@ Este projeto é uma API Rest, desenvolvida utilizando Node.js e TypeScript, para
 | DELETE | `/pessoas/:id` | Apaga a pessoa pelo seu id |
 
 ### Login (Público)
-| Requisição | Caminho | Descrição |
+| Método | Endpoint | Descrição |
 | --- | --- | --- |
 | POST | `/entrar` | Permite um usuário existente no sistema gerar um token para acessar os endpoints privados |
 | POST | `/cadastrar` | Permite criar um novo usuário |
