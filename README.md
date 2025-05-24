@@ -4,6 +4,24 @@ Este projeto é uma API Rest, desenvolvida utilizando Node.js e TypeScript, para
 ## Diagrama da aplicação
 <img src="./docs/api_nodejs_typescript.png" width="500"></img>
 
+## Conceitos abordados no projeto
+- Endpoints;
+- Controllers;
+- Banco de dados SQL;
+- Query builder;
+- Migrations de banco;
+- Seeds de banco;
+- Controle de usuário com email e senha;
+- Criptografia de senha;
+- Login de usuários;
+- Geração e utilização de tokens JWT;
+- Validação minuciosa de dados que entram nos endpoints;
+- Paginação de consultas;
+- Filtros de consultas;
+- Testes de código para garantir qualidade das entregas;
+- Uso de diferentes bancos de dados com um mesmo código;
+- Boas práticas de código, com conceitos do clean code.
+
 ## Endpoints
 ### Cidades (Privado)
 | Método | Endpoint | Descrição |
@@ -29,23 +47,28 @@ Este projeto é uma API Rest, desenvolvida utilizando Node.js e TypeScript, para
 | POST | `/entrar` | Permite um usuário existente no sistema gerar um token para acessar os endpoints privados |
 | POST | `/cadastrar` | Permite criar um novo usuário |
 
-## Conceitos abordados no projeto
-- Endpoints;
-- Controllers;
-- Banco de dados SQL;
-- Query builder;
-- Migrations de banco;
-- Seeds de banco;
-- Controle de usuário com email e senha;
-- Criptografia de senha;
-- Login de usuários;
-- Geração e utilização de tokens JWT;
-- Validação minuciosa de dados que entram nos endpoints;
-- Paginação de consultas;
-- Filtros de consultas;
-- Testes de código para garantir qualidade das entregas;
-- Uso de diferentes bancos de dados com um mesmo código;
-- Boas práticas de código, com conceitos do clean code.
+#### Payload dos endpoints (Login):
+
+- **Cadastrar usuário:** Cadastra um usuário no banco de dados do sistema.
+
+  Endpoint: `/cadastrar`
+  ```json
+  {
+    "nome": "Nome do usuário",
+    "email": "Email do usuário",
+    "senha": "Senha do usuário"
+  }
+  ```
+
+- **Fazer login:** Gera um token JWT para o usuário utilizar os endpoints privados do sistema.
+
+  Endpoint: `/entrar`
+  ```json
+  {
+    "email": "Email do usuário",
+    "senha": "Senha do usuário"
+  }
+  ```
 
 ## Como rodar o projeto
 1. Clone o repositório na sua máquina:
